@@ -2,7 +2,7 @@
 
 This is a test project for demonstrating MongoDB Aggregation capabilities using pipeline.
 
-# Sample Database
+## Sample Database
 
 The database contains data from a mock office supply company. The company tracks customer information and sales data, and has several store locations throughout the world.
 
@@ -77,3 +77,16 @@ This database contains a single collection named sales. Each document in the col
   "purchaseMethod": "Online"
 }
 ```
+
+## Aggregation in MongoDB
+
+In MongoDB, aggregation operations process the data records/documents and return computed results. Among the three ways to perform aggregation in MongoDB provided below, we are concerned with **Aggregation pipeline**
+
+- Aggregation pipeline
+- Map-reduce function
+- Single-purpose aggregation
+
+###### Aggregation pipeline
+
+The aggregation pipeline is a multi-stage pipeline, so in each state, the documents taken as input and produce the resultant set of documents now in the next stage(id available) the resultant documents taken as input and produce output, this process is going on till the last stage.
+Lets Discuss the ag
