@@ -5,9 +5,9 @@ from pprint import pprint as pp
 import logging as log
 
 SERVER_HOST_MAP = {'local': 'localhost:27017',
-                   'Server1': "localhost:27017",
-                   'Server2': "localhost:27017",
-                   'Server3': "localhost:27017"}
+                   'Server1': "10.45.3.1:27017",
+                   'Server2': "10.45.3.2:27017",
+                   'Server3': "10.45.3.3:27017"}
 
 
 def connect_client(host_port):
