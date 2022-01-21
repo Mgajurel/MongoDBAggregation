@@ -90,4 +90,12 @@ In MongoDB, aggregation operations process the data records/documents and return
 
 The aggregation pipeline is a multi-stage pipeline, so in each state, the documents taken as input and produce the resultant set of documents now in the next stage(id available) the resultant documents taken as input and produce output, this process is going on till the last stage.
 
-Lets Discuss the aggregation pipeline used here in lib/aggregate
+Lets Discuss the aggregation pipeline used here in lib/aggregation.py
+
+###### Scenario
+
+Making use of a number of stages, the goal is to separate our young tech savvy customers' information to three different servers (Server1, Server2, Server3) based on the total amount they have spent. Each of the stages involved has been represented and described below.
+
+1. **Pipeline1 stage:**
+   The first stage is a _$match_ stage. We have applied a filtering to select only those data whose items bought either contains a _backpack_ or _laptop_, has paid _Online_ and is below _30_ years of age (Hence, Young Tech savvy customers)
+   SCREENSHOT_FROM_CODE
