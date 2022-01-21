@@ -38,9 +38,7 @@ def alligator():
         '_id': '$customer',
         'totalPurchase': {'$sum': {'$multiply': ['$items.price', '$items.quantity']}}}}
 
-    pipeline4 = {'$addFields': {'customer': '$_id'}}
-
-    pipeline5 = {'$project': {'totalPurchase': 1, 'customer': 1, '_id': 0, 'environment':
+    pipeline4 = {'$project': {'totalPurchase': 1, 'environment':
                               {'$switch': {'branches': [
                                   {'case': {
                                       '$gt': ['$totalPurchase', 5000]}, 'then': 'Server1'},
@@ -50,9 +48,10 @@ def alligator():
                                   'default': 'Server2'
                               }}}}
 
-    pipeline6 = {'$group': {
+    pipeline5 = {'$group': {
         '_id': '$environment', 'data': {'$push': '$$ROOT'}}}
-    return [pipeline1, pipeline2, pipeline3, pipeline4, pipeline5, pipeline6]
+
+    return [pipeline1, pipeline2, pipeline3, pipeline5]
 
 
 def write_to_servers(documents):
