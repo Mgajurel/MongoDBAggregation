@@ -96,6 +96,54 @@ Lets Discuss the aggregation pipeline used here in lib/aggregation.py
 
 Making use of a number of stages, the goal is to separate our young tech savvy customers' information to three different servers (Server1, Server2, Server3) based on the total amount they have spent. Each of the stages involved has been represented and described below.
 
+![Aggregation Pipeline Diagram](https://github.com/Mgajurel/MongoDBAggregation/blob/main/resources/daigram.png)
+
 1. **Pipeline1 stage:**
-   The first stage is a _$match_ stage. We have applied a filtering to select only those data whose items bought either contains a _backpack_ or _laptop_, has paid _Online_ and is below _30_ years of age (Hence, Young Tech savvy customers)
-   SCREENSHOT_FROM_CODE
+   The first stage is a _$match_ stage. We have applied a filtering to select only those data whose items bought either
+   contains a _backpack_ or _laptop_, has paid _Online_ and is below _30_ years of age (Hence, Young Tech savvy customers)
+
+   ```python
+   pipeline1 = {'$match': {'items.name': {'$in': ['bagpack', 'laptop']},
+                            'purchaseMethod': 'Online', 'customer.age': {'$lt': 30}}}
+   ```
+
+2. **Pipeline2 stage:**
+   The second stage is a _$unwind_ stage. This stage is used to unwind the document in _items_ array, so we can evaluate the
+   totalPurchase amount.
+
+   ```python
+   pipeline2 = {'$unwind': '$items'}
+   ```
+
+3. **Pipeline3 stage:**
+   The third stage is a _$group_ stage. Groups input documents by the specified _\_id_ expression, in our case it is the customer information in _customer_ and also finds the _totalPurchase_ made by the customer by multiplying _items.price_ and _items.quantity_ and adding them for each _items_ .
+
+   ```python
+   pipeline3 = {'$group': {
+        '_id': '$customer',
+        'totalPurchase': {'$sum': {'$multiply': ['$items.price', '$items.quantity']}}}}
+   ```
+
+4. **Pipeline4 stage:**
+   The fourth stage is a _$project_ stage. This stage is used to add or remove fields from the output of previous stage.
+   Here, we have retained _totalPurchase_, assigned _\_id_ (which contains customer info) to _customer_, removed _\_id_(for aesthetics) and finally added a new field _environment_ to each aggregated result whose values can be _Server1_, _Server2_ or _Server3_ based on the _totalPurchase_ the customer has made which is demonstrated below.
+
+   ```python
+   pipeline4 = {'$project': {'totalPurchase': 1, 'customer': '$_id', '_id': 0, 'environment':
+                              {'$switch': {'branches': [
+                                  {'case': {
+                                      '$gt': ['$totalPurchase', 5000]}, 'then': 'Server1'},
+                                  {'case': {
+                                      '$lt': ['$totalPurchase', 2000]}, 'then': 'Server3'},
+                              ],
+                                  'default': 'Server2'
+                              }}}}
+   ```
+
+5. **Pipeline5 stage:**
+   The final stage is again a _$group_ stage. This stage is used to group the aggregated result based on _environment_ which is, after this, used to write them to respective servers.
+
+   ```python
+   pipeline5 = {'$group': {
+        '_id': '$environment', 'data': {'$push': '$$ROOT'}}}
+   ```
