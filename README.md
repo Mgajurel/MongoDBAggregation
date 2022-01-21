@@ -4,7 +4,7 @@ This is a test project for demonstrating MongoDB Aggregation capabilities using 
 
 ## Sample Database
 
-The database contains data from a mock office supply company. The company tracks customer information and sales data, and has several store locations throughout the world.
+The database contains data from a mock office supply company. The company tracks customer information and sales data, and has several store locations throughout the world. The sample database can be found at db_sample/sales.json
 
 ## Collection
 
