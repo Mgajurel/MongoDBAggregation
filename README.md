@@ -89,4 +89,5 @@ In MongoDB, aggregation operations process the data records/documents and return
 ###### Aggregation pipeline
 
 The aggregation pipeline is a multi-stage pipeline, so in each state, the documents taken as input and produce the resultant set of documents now in the next stage(id available) the resultant documents taken as input and produce output, this process is going on till the last stage.
-Lets Discuss the ag
+
+Lets Discuss the aggregation pipeline used here in lib/aggregate
